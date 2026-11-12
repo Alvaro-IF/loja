@@ -1,98 +1,61 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Alert, Button, ScrollView, StyleSheet, Text, View } from "react-native";
+import Promocao from "../components/Promocao";
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+export default function Home() {
+  const nomeLoja = "LojaIFPE";
+  const endereco = "Rua Fictícia, 123 - Centro";
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+  const handleSair = () => {
+    Alert.alert("Saindo da loja...", "Deseja realmente sair?", [
+      { text: "Cancelar" },
+      { text: "Sair", onPress: () => Alert.alert("Você saiu da loja.") },
+    ]);
+  };
+
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+    <View style={styles.tela}>
+      <View style={styles.header}>
+        <Text style={styles.titulo}>{nomeLoja}</Text>
+        <Text style={styles.endereco}>{endereco}</Text>
+      </View>
 
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+      <ScrollView contentContainerStyle={styles.scroll}>
+        <Promocao mensagem="30% OFF" cor="purple" corBotao="purple" />
+        <Promocao mensagem="Frete grátis!" cor="blue" corBotao="blue" />
+        <Promocao mensagem="10% no PIX" cor="green" tamanho={24} destaque={true} corBotao="green" />
+        <Promocao mensagem="Queima de estoque!" />
+        <Promocao mensagem="Leve 3 pague 2" />
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        <View style={{ marginVertical: 20 }}>
+          <Button title="Sair" onPress={handleSair} color="red" />
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  tela: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: "#fff",
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+  header: {
+    padding: 20,
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+    alignItems: "center",
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+  titulo: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "red",
   },
-  title: {
-    textAlign: 'center',
+  endereco: {
+    color: "blue",
+    fontSize: 16,
   },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  scroll: {
+    alignItems: "center",
+    paddingBottom: 40,
   },
 });
